@@ -47,11 +47,11 @@ pub fn get_mnemonic(seed_password: &str) -> (String, String, String, String) {
     let xprv = ExtendedPrivKey::new_master(*network, &seed).expect("New xprivkey from seed");
 
     let descriptor = format!(
-        "wpkh({})",
+        "tr({})",
         get_descriptor(xprv, STRING_DESCRIPTOR.to_string())
     );
     let change_descriptor = format!(
-        "wpkh({})",
+        "tr({})",
         get_descriptor(xprv, STRING_CHANGE_DESCRIPTOR.to_string())
     );
 
