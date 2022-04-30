@@ -5,6 +5,7 @@ use bdk::{
     bitcoin::util::bip32::{DerivationPath, ExtendedPrivKey, ExtendedPubKey, KeySource},
     descriptor::Segwitv0,
     keys::{DerivableKey, DescriptorKey, DescriptorKey::Secret as SecretDesc},
+    miniscript::MiniscriptKey,
 };
 use bip39::Mnemonic;
 use bitcoin::secp256k1::Secp256k1;
@@ -56,13 +57,13 @@ pub fn get_mnemonic(seed_password: &str) -> (String, String, String, String) {
     );
 
     let secp = Secp256k1::new();
-    let xpub = ExtendedPubKey::from_private(&secp, &xprv);
+    let xpub = ExtendedPubKey::from_priv(&secp, &xprv);
 
     (
         mnemonic_phrase.to_string(),
         descriptor,
         change_descriptor,
-        xpub.public_key.pubkey_hash().to_string(),
+        xpub.public_key.to_pubkeyhash().to_string(),
     )
 }
 
@@ -75,11 +76,11 @@ pub fn save_mnemonic(seed_password: &str, mnemonic: String) -> (String, String, 
     let xprv = ExtendedPrivKey::new_master(*network, &seed).expect("New xprivkey from seed");
 
     let descriptor = format!(
-        "wpkh({})",
+        "tr({})",
         get_descriptor(xprv, STRING_DESCRIPTOR.to_string())
     );
     let change_descriptor = format!(
-        "wpkh({})",
+        "tr({})",
         get_descriptor(xprv, STRING_CHANGE_DESCRIPTOR.to_string())
     );
 
@@ -89,6 +90,6 @@ pub fn save_mnemonic(seed_password: &str, mnemonic: String) -> (String, String, 
     (
         descriptor,
         change_descriptor,
-        xpub.public_key.pubkey_hash().to_string(),
+        xpub.public_key.to_pubkeyhash().to_string(),
     )
 }
