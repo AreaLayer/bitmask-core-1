@@ -1,5 +1,7 @@
 use std::str::FromStr;
 
+use crate::data::constants::{BTC_CHANGE_PATH, BTC_PATH, NETWORK, RGB_NFTS_PATH, RGB_TOKENS_PATH};
+use crate::log;
 use anyhow::Result;
 use bdk::{
     bitcoin::util::bip32::{DerivationPath, ExtendedPrivKey, ExtendedPubKey, KeySource},
@@ -7,9 +9,7 @@ use bdk::{
     keys::{DerivableKey, DescriptorKey, DescriptorKey::Secret as SecretDesc},
 };
 use bip39::Mnemonic;
-use bitcoin::secp256k1::Secp256k1;
-
-use crate::data::constants::{BTC_CHANGE_PATH, BTC_PATH, NETWORK, RGB_NFTS_PATH, RGB_TOKENS_PATH};
+use secp256k1::Secp256k1;
 
 fn get_random_buf() -> Result<[u8; 16], getrandom::Error> {
     let mut buf = [0u8; 16];
@@ -18,7 +18,9 @@ fn get_random_buf() -> Result<[u8; 16], getrandom::Error> {
 }
 
 fn get_descriptor(xprv: ExtendedPrivKey, path: String) -> String {
+    log!("ajaja");
     let secp = Secp256k1::new();
+    log!("ajaja2");
     let deriv_descriptor: DerivationPath = DerivationPath::from_str(path.as_str()).unwrap();
     let derived_xprv = &xprv.derive_priv(&secp, &deriv_descriptor).unwrap();
 

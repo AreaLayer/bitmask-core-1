@@ -191,6 +191,7 @@ dependencies = [
  "once_cell",
  "pretty_env_logger",
  "reqwest",
+ "secp256k1",
  "serde",
  "serde-encrypt",
  "serde_json",
