@@ -275,9 +275,9 @@ struct TransactionData {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BlindingUtxo {
-    conceal: String,
-    blinding: String,
-    utxo: OutPoint,
+    pub conceal: String,
+    pub blinding: String,
+    pub utxo: OutPoint,
 }
 
 pub fn set_blinded_utxo(utxo_string: &str) -> Result<BlindingUtxo> {
